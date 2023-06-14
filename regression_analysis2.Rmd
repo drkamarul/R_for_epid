@@ -1,0 +1,242 @@
+---
+title: "Logistic Regression Analysis"
+author: "Assoc Prof Kamarul Imran Musa"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    keep_md: yes
+  pdf_document: 
+    toc: TRUE
+---
+
+
+\newpage
+
+# Logistic regression 
+
+## Read data
+
+The data comes from a surgeon (Dr Najmi). The data contains variables from patients with peptic ulcer disease. 
+
+It is in excel form. 
+
+```{r}
+PUP2 <- read_excel(here('datasets_regression', 'PUP2.xlsx'))
+```
+
+Quickly examine types of variables and summary statistics
+
+```{r}
+glimpse(PUP2)
+summary(PUP2)
+```
+
+## Data wrangling and EDA
+
+You can use **summarytools::descr** to get a quick but more elaborate summary statistics
+
+This is the summary statistics for all numerical variables. 
+
+```{r}
+library(summarytools)
+descr(PUP2)
+```
+
+## Outcome and predictor variables
+
+The outcome of interest is variable *outcome*. It is a character variable labelled as *alive* or *dead*. 
+
+**Tidyverse** prefers to use character variables rather than factor variables. 
+
+```{r}
+PUP2 %>% group_by(outcome) %>% count()
+```
+
+**descr** give also provide summary statistics based on the outcome of interest
+
+```{r}
+PUP2 %>% split(.$outcome) %>% 
+  map(~descr(.x, stats = c('mean', 'sd', 'min', 'med', 'max')),
+      transpose = TRUE)
+```
+
+
+We convert the variable outcome from character to factor
+
+```{r}
+PUP2 <- PUP2 %>% mutate(oc2 = factor(outcome))
+PUP2 %>% ggplot(aes(x = oc2)) + geom_bar() + 
+  xlab('outcome') + ylab('freq')
+```
+
+How about variable ASA. It is not a numerical variable. Let us plot it against outcome. 
+
+```{r}
+PUP2 %>% ggplot(aes(ASA)) + geom_bar() +
+  facet_wrap(~oc2)
+```
+
+
+## Estimation
+
+### Univariate logistic regression
+
+```{r }
+options(scipen = 999)
+pup_uni <- PUP2 %>% select(oc2, age, gender, epigastric_pain, onset_more_24_hrs, diabetes, 
+                NSAIDS, previous_OGDS, systolic, diastolic, ASA, PULP, perforation,
+                admission_to_op_hrs, hemoglobin, twc) %>% 
+  map_dfr(~tidy(glm(oc2 ~ .x, family = binomial, data = PUP2), 
+                conf.int = T), .id = 'variable') %>%
+  filter(variable != 'oc2')
+kable(pup_uni) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
+```
+
+Get the odds ratios
+
+```{r}
+crude_or_co <- PUP2 %>% select(oc2, age, gender, epigastric_pain, onset_more_24_hrs, diabetes, 
+                NSAIDS, previous_OGDS, systolic, diastolic, ASA, PULP, perforation,
+                admission_to_op_hrs, hemoglobin, twc) %>%
+  map(~glm(oc2 ~ .x, family = binomial, data = PUP2)) %>%
+  map_dfr(~tidy(., exponentiate = TRUE, conf.int = TRUE), .id = 'variable') %>%
+  filter(variable != 'oc2')
+kable(crude_or_co)  %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
+```
+
+Combine the results
+
+```{r}
+model_uni <- bind_cols(pup_uni, crude_or_co) %>% 
+  select(-c(variable...9, term...10, statistic...13, p.value...14)) %>%
+  rename(odds_ratio = estimate...3)
+kable(model_uni)  %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
+write_csv(model_uni, 'model_uni.csv')
+```
+
+### Multivariables logistic analysis
+
+We start with main effect models (no interaction)
+
+Let us run this model with
+
+- Outcome: oc2
+- Primary variables: ASA, degree of perforation, PULP, NSAIDS, Hg, malena, onset more than 24 
+- Confounding variables: age, gender, diabetes, hypertension
+
+Primary variables are variables of interest that would predict outcome of peptic ulcer. Confounding variables are variables that may alter the effect of the primary variables when they are in the model. This may happen due to different distribution of them at the beginning of the study.
+
+Do not control variables after the study (refer to Andrew Gelman argument)
+
+```{r}
+model_multivar <- 
+  glm(oc2 ~ age + gender + epigastric_pain + onset_more_24_hrs + diabetes + 
+        NSAIDS + factor(ASA) + PULP + perforation + hemoglobin, 
+      family = binomial(link = 'logit'), data = PUP2)
+model_multivar2<- tidy(model_multivar, conf.int = T)
+kable(model_multivar2)  %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
+```
+
+With interaction model. Because, the effect of covariates on outcome maybe different according to different level of PULP and extent of perforation size. 
+
+The interaction effect between perforation and PULP. 
+
+```{r}
+model_ia <- 
+  glm(oc2 ~ age + gender + epigastric_pain + onset_more_24_hrs + diabetes + 
+        NSAIDS + factor(ASA) + PULP + perforation + hemoglobin + perforation:PULP,
+      family = binomial(link = 'logit'), data = PUP2)
+model_ia <- tidy(model_ia, conf.int = T)
+kable(model_ia)  %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
+```
+
+## Alternative models
+
+For ASA adjusting for baseline covariates (age, gender, diabetes, onset_more_24_hrs)
+
+```{r}
+model_ASA <- 
+  glm(oc2 ~ factor(ASA) + age + gender + diabetes + onset_more_24_hrs, 
+      family = binomial(link = 'logit'), data = PUP2)
+m_ASA <- tidy(model_ASA, exponentiate = TRUE, conf.int = TRUE)
+```
+
+For Perforation
+
+```{r}
+model_perf <- 
+  glm(oc2 ~ degree_perforation + age + gender + diabetes + onset_more_24_hrs,
+      family = binomial(link = 'logit'), data = PUP2)
+m_perf <- tidy(model_perf,  exponentiate = TRUE, conf.int = TRUE)
+```
+
+For PULP
+
+```{r}
+model_PULP <- 
+  glm(oc2 ~ PULP + age + gender + diabetes + onset_more_24_hrs, 
+      family = binomial(link = 'logit'), data = PUP2)
+m_pulp <- tidy(model_PULP,  exponentiate = TRUE, conf.int = TRUE)
+
+```
+
+For perforation
+
+```{r}
+model_perf2 <- 
+  glm(oc2 ~ perforation + age + gender + diabetes + onset_more_24_hrs, 
+      family = binomial(link = 'logit'), data = PUP2)
+m_perf2 <- tidy(model_perf2,  exponentiate = TRUE, conf.int = TRUE)
+```
+
+
+For haemoglobin
+
+```{r}
+model_hg <- 
+  glm(oc2 ~ hemoglobin + age + gender + diabetes + onset_more_24_hrs, 
+      family = binomial(link = 'logit'), data = PUP2)
+m_hg <- tidy(model_hg,  exponentiate = TRUE, conf.int = TRUE)
+``` 
+
+
+Results in combined nicer tidy format
+
+```{r}
+multi_confirm <- 
+  bind_rows(m_ASA, m_perf, m_pulp, m_perf2, m_hg) %>% 
+  filter(term %in% c("factor(ASA)2", "factor(ASA)3", 
+                     "degree_perforationmoderate", "degree_perforationsmall",
+                     "PULP", "perforation", "hemoglobin")) %>%
+  rename(adjOR = estimate, lower_CI = conf.low, upper_CI = conf.high)
+
+kable(multi_confirm) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) 
+
+write_csv(multi_confirm, 'multivar_final.csv')
+```
+
+## Model checking
+
+Making predictions
+
+- log-odds
+- probability
+
+```{r}
+#augment(model_multivar, type = c('link', 'response'))
+augment(model_multivar, type.predict = 'link')
+augment(model_multivar, type.predict = 'response')
+```
+
+Others:
+
+- confusion matrix
+- overall model fitness (Hosmer Lemeshow test)
+- Area under the ROC curve
+- Model diagnostics

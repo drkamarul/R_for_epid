@@ -1,0 +1,82 @@
+---
+title: "Epidemiological and Statistical Analysis Using R"
+author: "Kamarul Imran Musa"
+format: html
+---
+
+
+## About myself
+
+My name is Kamarul Imran, but just call me KIM. 
+
+I hold the position of Associate Professor in Epidemiology and Statistics at the School of Medical Sciences, Universiti Sains Malaysia. Currently, 
+
+- Head, Department of Community Medicine, School of Medical Sciences, 
+- Adjunct Assoc Prof at School of Medical and Life Sciences, Sunway University. 
+- Treasurer, Malaysian Association of Epidemiology 
+
+My academic profile is available [here](http://www.medic.usm.my/jpm/index.php/en/academic-information/587-prof-madya-dr-kamarul-imran-musa)
+
+Previously, I also taught at Monash Universiti Malaysia for the business analytics course, a Master programme.  
+
+
+## Research profiles
+
+My research profile at Google Scholar is available [here](https://scholar.google.com/citations?user=XVf2_QcAAAAJ&hl=en&authuser=1.) 
+
+My SCOPUS author ID is 57194536466
+
+![](image/scopus.png)
+
+## Research interests
+
+My research interests include medical epidemiology, statistical modelling and machine learning. 
+
+Recently, I was awarded with the FRGS grant (RM125,000) to understand the roles of  mammography images and clinical conditions on the performance of machine learning and statistical models to predict breast cancer. 
+
+Email: drkamarul@usm.my 
+
+Twitter: @kamarul_imran
+
+Personal page: https://myanalytics.com.my/
+
+![](image/myweb.png)
+
+
+## Introduction
+
+Length of workshop : 180 minutes
+
+Approaches:
+
+- Theory
+- Practical 
+- Tips
+
+## Data analysis workflow (40 minutes)
+
+
+### Workflow
+
+
+### Data visualization
+
+
+### Data wrangling
+
+
+### Tips
+
+
+
+## Statistical modelling (40 minutes)
+
+
+## Spatial Epidemiology (40 minutes)
+
+
+## Summary
+
+
+
+

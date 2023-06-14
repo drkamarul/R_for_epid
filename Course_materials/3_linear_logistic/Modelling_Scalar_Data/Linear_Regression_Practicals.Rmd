@@ -1,0 +1,691 @@
+---
+title:  "Modelling Continuous outcome: Linear Regression"
+author: |
+  | Kamarul Imran Musa
+  | Associate Professor (Epidemiology and Statistics)
+date: "`r Sys.Date()`"
+output:
+  pdf_document:
+    number_sections: yes
+    toc: yes
+    toc_depth: 3
+  html_document:
+    theme: united
+    highlight: tango
+    df_print: paged
+    toc: yes
+    toc_depth: '3'
+    toc_float: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, out.width = '65%')
+```
+
+\newpage
+
+# Linear Regression - Practicals
+
+## Short practicals
+
+In this short practicals, we will show how to perform estimation, inference, prediction and model checking for linear regression model. 
+
+Steps:
+
+- Create project
+- Make sure dataset is(are) inside the project directory
+- load required R libraries
+
+
+```{r}
+library(tidyverse) #data wrangling and data visualization
+library(haven) #read statistical data
+library(here) #facilitate directory
+library(broom) #tidier results
+```
+
+
+First, we read the data into R.  
+
+```{r}
+data0 <- read_dta(here('datasets', 'datamssm_a.dta'))
+glimpse(data0)
+```
+Convert labelled variables to factor variables 
+
+```{r}
+data0 <- data0 %>%
+  mutate_if(is.labelled, ~as_factor(.))
+summary(data0)
+```
+
+### Estimation
+
+Now, we will estimate the regression parameters.
+
+Constant only model
+
+- Only one dependent variable 
+
+```{r}
+mod0 <- lm(hba1c ~ 1, data = data0)
+summary(mod0)
+```
+
+Univariable model
+
+- Only one dependent variable
+- Only one covariate or predictor variable
+
+```{r}
+modldl <- lm(hba1c ~ ldl, data = data0)
+summary(modldl)
+```
+
+Multivariable model
+
+Now, we let's estimate a model with
+
+- One dependent variable - hba1c
+- Two covariates : ldl and gender 
+
+```{r}
+modldl.gender <- lm(hba1c ~ ldl + gender, data = data0)
+summary(modldl.gender)
+```
+
+Multivariable with interaction
+
+Now we add a new covariate which is the product of two covariates
+
+- Dependent variable hba1c
+- Covariates: `ldl + gender + ldl*gender`
+
+```{r}
+modldl.gender.ia <- lm(hba1c ~ ldl + gender + ldl*gender, data = data0)
+summary(modldl.gender.ia)
+```
+
+### Inference 
+
+Getting the $95\%$ for the $\hat{\beta}$
+
+```{r}
+confint(modldl)
+confint(modldl.gender)
+confint(modldl.gender.ia)
+```
+Nicer results with `broom::tidy()`
+
+```{r}
+tidy(modldl, conf.int = TRUE)
+```
+
+```{r}
+tidy(modldl.gender, conf.int = TRUE)
+```
+
+```{r}
+tidy(modldl.gender.ia)
+```
+
+
+### Prediction
+
+Now, we can get the fitted values for hba1c
+
+```{r}
+fitted(modldl) %>% head()
+fitted(modldl.gender) %>% head()
+```
+Or
+
+```{r}
+augment(modldl) %>% head()
+augment(modldl.gender.ia) %>% tail()
+```
+
+
+### Model checking
+
+We need to check for linear model assumptions
+
+1. Linearity of residuals
+2. Residuals are normally distributed
+3. Equal variance of residuals
+4. Independence observations 
+
+```{r}
+plot(modldl)
+plot(modldl.gender.ia)
+```
+
+Somethings are not right 
+
+- does not look random
+- some outliers
+- is it linear? 
+
+We need to do further treatment:
+
+- transformation of variables 
+- more complex model
+- removing of influential observations 
+
+## Long practicals
+
+### Preparation 
+
+Set a new project in RStudio (recommended) or set a working directory. 
+
+To set the new project, click
+
+File -> New Project -> New Directory -> New Project
+
+You need to know the file path. It is treated differently in Windows OS, Linux OS and Mac OD. 
+
+In the project, you should store (with or without folders) your dataset and your R codes. The directory will later save the objects and outputs such as plots.  
+
+### Load R packages
+
+You can load R packages that you want to use for the analysis. In this project we load 
+
+1.  **tidyverse** - for data wrangling and plots
+2.  **foreign** - to read data
+3.  **psych** - to summarize data
+4.  **corrplot**- to make plot for correlation
+5.  **knitr** - to make nice table
+6.  **broom** - to create nice outputs
+7.  **MASS** - to do variable selection
+8.  **tidyr** - to use drop_na
+
+
+```{r}
+library(tidyverse) 
+library(psych)
+library(corrplot)
+library(broom)
+library(tidyr)
+```
+
+
+### Read data
+
+To read `.csv`, `.txt` files, you can use **base** package. But to read statistical data from SPSS (`.sav`), Stata (`.dta`) or spreadsheet such `.xlsx` file you need user-contributed packages such as **haven**, **foreign**, **readr** or **readxl**.
+
+We will use **foreign** package for this practical. Please note that, **haven** can read up to the latest Stata format while **foreign** reads until version 12.
+
+```{r}
+data1 <- read_dta(here('datasets','datamssm_a.dta'))
+```
+
+### Describe data
+
+```{r}
+summary(data1)
+```
+
+Convert labelled variables to factor variables 
+
+```{r}
+data1 <- data1 %>%
+  mutate_if(is.labelled, ~as_factor(.))
+summary(data1)
+```
+
+Or you might try **psych** package to give better summary of your data
+
+```{r}
+library(psych)
+data1 %>% describe()
+```
+
+Or package **summarytools**
+
+```{r}
+library(summarytools)
+descr(data1)
+data1 %>%
+  select(-codesub) %>%
+  freq()
+```
+
+
+### Explore and wrangle data
+
+Perform plots, to look for
+
+1.  outliers
+2.  range of data
+3.  missing data
+4.  error in data entry
+5.  wrong groupings
+6.  distribution of data
+
+```{r , message=FALSE, warning=FALSE}
+ggplot(data1, aes(hba1c)) + geom_histogram() + facet_grid(dmdx~.) 
+ggplot(data1, aes(fbs)) + geom_histogram() + facet_grid(dmdx~.) 
+ggplot(data1, aes(msbpr)) + geom_histogram() + facet_grid(hpt~.) 
+ggplot(data1, aes(mdbpr)) + geom_histogram() + facet_grid(hpt~.) 
+ggplot(data1, aes(totchol)) + geom_histogram()
+ggplot(data1, aes(ftrigliz)) + geom_histogram()
+ggplot(data1, aes(hdl)) + geom_histogram()
+ggplot(data1, aes(ldl)) + geom_histogram()
+```
+
+We may want to 
+
+1.  remove hba1c less than 2.5
+2.  remove ldl less than 0.5 mmol/l
+3.  remove total cholesterol less than 2.0 mmol/l
+4.  remove ftrigliz less than 2 mmol/l or higher than 10 mmol/l 
+5.  remove mdbpr less than 40
+6.  generate bmi
+
+```{r}
+data2 <- data1 %>% 
+  filter(hba1c > 2.5, ldl > 0.5, totchol >=2.0, ftrigliz < 8, mdbpr >=40) %>% 
+  mutate(bmi = weight/(height^2)) %>% 
+  mutate(overweight = if_else(bmi >=25.0,'overwt','not_overwt')) 
+```
+
+
+Possible high correlations between numerical variables. Any correlations bigger than 0.7?
+
+To do that:
+
+1.  We create a new dataset with only numerical variables
+2.  perform correlations
+3.  plot correlogram
+
+```{r}
+data3 <- data2 %>% 
+  select_if(is.numeric)
+```
+
+The results of correlation matrix
+
+```{r}
+cor.data2 <- cor(data3, 
+                 use = "complete.obs", 
+                 method = "pearson")
+
+head(round(cor.data2,2))
+```
+
+This the correlogram
+
+```{r}
+corrplot(cor.data2, 
+         method = "circle")
+```
+
+### Perform linear regression models 
+
+#### Univariables
+
+Model with one covariate; age. 
+
+The objective is to estimate the average value of Hba1c conditional on age. 
+
+```{r}
+mod.age <- lm(hba1c ~ age, data = data2)
+summary(mod.age)
+```
+
+Let us create a better table
+
+```{r}
+tidy(mod.age, conf.int = TRUE)
+```
+
+One covariate, fbs.
+
+The objective is to estimate the average value of Hba1c conditional on fbs.
+
+```{r}
+mod.fbs <- lm(hba1c ~ fbs, data = data2)
+tidy(mod.fbs, conf.int = TRUE)
+```
+
+Hba1c conditional on hpt status (yes vs no) OR can be phrased as hba1c as a function of hpt status. 
+
+```{r}
+levels(data1$hpt)
+mod.hpt <- lm(hba1c ~ hpt, data = data2)
+tidy(mod.hpt, conf.int = TRUE)
+```
+
+Are you surprised with the results?
+
+#### Multivariable
+
+In multivariable analysis, there will be at least 2 covariates. 
+
+Let us say we would like to model hba1c with these covariate age and fbs. 
+
+In multivariable analysis, we can:
+
+1.  estimate the effect of age adjusted for fbs
+2.  estimate the effet of fbs when age is controlled
+3.  predict the average hba1c for a given value of age and fbs
+  
+```{r}
+mod.age.fbs <- lm(hba1c ~ age + fbs, data = data2)
+summary(mod.age.fbs)
+```
+
+Let us say, now, we would like to model hba1c with these covariates: age, fbs, overweight (overwt vs not_overwt). 
+
+In multivariable analysis, we can:
+
+1.  estimate the effect of age adjusted for fbs and hpt status
+2.  estimate the effet of fbs when age and hpt status are controlled
+3.  predict the average hba1c for a given value of age, fbs and hpt status
+
+```{r}
+mod.age.fbs.ow <- lm(hba1c ~ age + fbs + overweight, data = data2)
+tidy(mod.age.fbs.ow, conf.int = TRUE)
+```
+
+### Model comparison
+
+You can compare by
+
+1.  doing the anova test between models
+2.  looking at p-value for each covariate (not advisable)
+
+Between mod.age.fbs.ow and mod.age.fbs but different sample size will not allow `anova()` to work. So, we will use remove NA values from our data to ensure equal sample size.
+
+```{r}
+# anova(mod.age, mod.age.fbs,na.action = na.omit) # does not work
+data2.compl <- data2 %>% filter(!is.na(age), !is.na(fbs), !is.na(overweight))
+```
+
+Now, let us compare again
+
+```{r}
+mod.age.fbs.ow.ss <- lm(hba1c ~ age + fbs + overweight, data = data2.compl)
+mod.age.fbs.ss <- lm(hba1c ~ age + fbs, data = data2.compl)
+anova(mod.age.fbs.ow.ss, mod.age.fbs.ss)
+```
+
+There is significant (p-value < 0.05) difference between the two models. What do you think of the contribution of overweight to the model?
+
+### Model selection
+
+We now build a model using **stepwise** variable selection
+
+For both and forward, we need to remove missing (NA) values. Note: Do not load **MASS** package before using **dplyr::select()**. They conflict with one another
+
+```{r}
+data2.complete <- data2 %>% 
+  select(hba1c, age,fbs, overweight, gender, 
+         crural, height, weight, waist, 
+         msbpr,mdbpr, hdl, ldl) %>% 
+         drop_na()
+```
+
+Start with the easiest : backward selection
+
+```{r}
+library(MASS)
+# mod.age.fbs.ow <- lm(hba1c ~ age + fbs + overweight, data = data2)
+multivar.m <- lm(hba1c ~ age + fbs + overweight + gender + crural + 
+                   height + weight + waist + msbpr + mdbpr + hdl + ldl,
+                 data = data2)
+step.bw <- stepAIC(multivar.m, direction="backward")
+```
+
+
+Make a minimal model and a  full model
+
+```{r}
+cont.only.m <- lm(hba1c ~ 1, data = data2.complete)
+multivar.m.complete <- lm(hba1c ~ age + fbs + overweight + gender + crural + 
+                   height + weight + waist + msbpr + mdbpr + hdl + ldl, 
+                   data = data2.complete)
+```
+
+Then run both and forward stepwise
+
+```{r}
+library(MASS)
+step.both <- stepAIC(cont.only.m, direction="both",
+                     scope=list(upper = multivar.m.complete,
+                                lower = cont.only.m))
+step.fw <- stepAIC(cont.only.m, direction = "forward",
+                    scope=list(upper = multivar.m.complete,
+                                lower = cont.only.m))
+
+step.both$anova
+step.fw$anova 
+step.bw$anova
+```
+
+Of course, model selection is not as easy as running automatic selection (forward, backward, stepwise). 
+
+**WARNING** Do not let automatic variable selection foolds you when your main interest is explaining the role of covariates. 
+
+Let us say, based on model selection and expert opinion, the final model consists of these covariates:
+
+1.  age
+2.  fbs
+3.  overweight
+4.  crural
+
+```{r}
+mod.age.fbs.ow.rur <- lm(hba1c ~ age + fbs + overweight + crural, 
+                          data = data2)
+summary(mod.age.fbs.ow.rur)
+```
+
+Useful source <https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4842399/>
+
+### Handling Confounding 
+
+msbpr and mdbpr are highly correlated. Examine, what happens
+
+1.  if only msbpr as covariate
+2.  if only mdbpr as covariate
+3.  if msbpr and mdbpr as covariates
+
+```{r}
+ggplot(data2, aes(msbpr, mdbpr)) + geom_point() +
+   stat_smooth(method = "lm", col = "red")
+```
+
+Model with sbp (model 1)
+
+```{r}
+mod.sbp <- lm(hba1c ~ msbpr , data = data2)
+mod.sbp.res <- tidy(mod.sbp)
+mod.sbp.res
+```
+
+Model with dbp (model 2)
+
+```{r}
+mod.dbp <- lm(hba1c ~ mdbpr , data = data2)
+mod.dbp.res <- tidy(mod.dbp)
+mod.dbp.res
+```
+
+Now, what happens when we add sbp and dbp (model 3)?
+
+```{r}
+mod.sbp.dbp <- lm(hba1c ~ msbpr + mdbpr, data = data2)
+mod.sbp.dbp.res <- tidy(mod.sbp.dbp)
+mod.sbp.dbp.res
+```
+
+Difference in beta between model 1 and model 3, between model 2 and model 3
+
+1.  for msbp ` r (mod.sbp.dbp.res[2,2] - mod.sbp.res[2,2])/(mod.sbp.res[2,2])*100`
+2.  for mdbp ` r (mod.sbp.dbp.res[2,3] - mod.dbp.res[2,2])/(mod.dbp.res[2,2])*100`
+
+Which model should we keep?
+
+### Identifying Interaction
+
+#### Numerical and numerical covariates
+
+Add interaction between fbs and bmi
+
+```{r}
+mod.fbs.bmi <- lm(hba1c ~ fbs + bmi, data = data2)
+int.fbs.bmi <- lm(hba1c ~ fbs + bmi + fbs*bmi, data = data2)
+tidy(mod.fbs.bmi)
+tidy(int.fbs.bmi)
+```
+
+Compare models 
+
+```{r}
+anova(int.fbs.bmi, mod.fbs.bmi)
+```
+
+The models is significant at level of 5 percent (p < 0.05)
+
+
+#### Numerical and categorical covariate 
+
+fbs and overweight
+
+```{r}
+mod.fbs.ow <- lm(hba1c ~ fbs + overweight, data = data2)
+int.fbs.ow <-lm(hba1c ~ fbs + overweight + fbs*overweight, data = data2)
+tidy(mod.fbs.ow)
+tidy(int.fbs.ow)
+```
+
+It is difficult to assess when you have multiple p-values. **anova** can help
+
+```{r}
+anova(mod.fbs.ow, int.fbs.ow)
+```
+
+### Model assessment
+
+Let us take model the preliminary final model with fbs, overweight, crural, the interaction between fbs and overweight, msbpr, ldl and gender.
+
+```{r}
+prelim.final.m <- lm(hba1c ~ fbs + overweight + crural + fbs*overweight +
+                       msbpr + ldl + gender, data = data2)
+```
+
+
+
+#### Diagnostics plots
+
+```{r}
+plot(prelim.final.m)
+```
+
+
+#### Fitted values, residuals and influentials values 
+
+Steps:
+
+1.  Generate the fitted value
+2.  Generate the residuals
+3.  Generate influential values 
+4.  Check assumptions
+
+```{r}
+res.mod <- residuals(prelim.final.m)
+head(res.mod)
+hist(res.mod)
+```
+
+
+
+Perhaps, we can use `broom::augment()` to generate predictions, residuals and cluster assignments.
+
+```{r}
+library(kableExtra)
+data2.pred.res <- augment(prelim.final.m)
+data2.pred.res %>% 
+  slice_sample(n = 30) %>%
+  kbl() %>%
+  kable_styling()
+```
+
+```{r}
+library(DT)
+data2.pred.res %>% datatable()
+```
+
+
+### Predictions
+
+To generate the predicted values based on current data, use the `broom::augment()` function.
+
+If based on new data, then create new data first
+
+```{r}
+detach("package:MASS", unload=TRUE)
+
+new_data <- expand.grid(fbs = c(5.0, 11.0), 
+                        overweight = c('overwt', 'not_overwt'),
+                        crural = c('urban','rural'),
+                        msbpr = mean(data2$msbpr),
+                        ldl = mean(data2$ldl),
+                        gender = c('female','male'))
+new_data
+```
+
+Now, we predict the average hba1c for the new data
+
+```{r}
+pred.hba1c <- predict(prelim.final.m, newdata = new_data)
+pred.hba1c
+kable(cbind(new_data, pred.hba1c))
+```
+
+### Influentials
+
+1.  Cooks distance : values above 1 or above $\frac{4}{n}$ 
+2.  standardized residuals : values above 2 or lower than $-2$
+3.  leverage above $\frac{2k + 2}{n}$ = $\frac{2(7) + 2}{4225} = 0.0038$
+
+
+```{r}
+influen.obs <- data2.pred.res %>% filter(.std.resid > 2 | .std.resid < -2 |
+                                         .hat > 0.0038)  
+head(influen.obs, 20)
+```
+
+Now let's keep standardized residuals between 2 and -2
+
+```{r}
+non.influen.obs <- data2.pred.res %>% 
+  filter(.std.resid < 2 & .std.resid > -2 & .hat < 0.0038)
+```
+
+Run the model again
+
+```{r}
+prelim.final.m2 <- lm(hba1c ~ fbs + overweight + crural + fbs*overweight +
+                       msbpr + ldl + gender, data = non.influen.obs)
+```
+
+Run diagnostics
+
+```{r}
+plot(prelim.final.m2)
+```
+
+## Conclusion
+
+- Model specification is important
+- Which variables are 
+  - confounders
+  - mediators
+  - moderators
+- Effect of multicolinearity 
+- Model checking and model assessment
+- Are there outliers and are they influentials?
+- Simple model vs complex model
+- Bias and variance 
+- Exploratory vs Confirmatory model
