@@ -1,0 +1,12 @@
+name: intro_to_r2
+title: Intro_to_R
+username: drkamarul
+account: drkamarul
+server: healthdata.usm.my
+hostUrl: https://healthdata.usm.my:3939/__api__
+appId: 176
+bundleId: 309
+url: https://healthdata.usm.my:3939/content/176/
+when: 1597682075.40495
+asMultiple: FALSE
+asStatic: FALSE

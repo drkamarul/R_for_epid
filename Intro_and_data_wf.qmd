@@ -41,6 +41,15 @@ Twitter: @kamarul_imran
 Personal page: https://myanalytics.com.my/
 
 ![](image/myweb.png)
+## Books
+
+- Analysing Data Using R (Penerbit USM)
+
+![](image/book1.png)
+
+- Data Analysis in Health and Medicine Using R (CRC Press)
+
+![](image/book2.png)
 
 
 ## Introduction
@@ -55,14 +64,79 @@ Approaches:
 
 ## Data analysis workflow (40 minutes)
 
+Powerpoint presentation 
 
-### Workflow
+- Read : Read data into R 
+- Explore : Explore data using graphs and tables
+- Assume : Identify assumptions for the analysis
+- Analyze : Analyze data based on objectives and proposed methods
+- Assess : Assess results based on assumptions. Identify limitations of analysis
+- Present : Present results, data and codes 
 
 
 ### Data visualization
 
+Data visualization is 
+
+… the graphical representation of information and data. 
+
+This is done using visual elements like charts, graphs, and maps
+Data visualization tools provide an accessible way to see and understand trends, outliers, and patterns in data.
+
+Objective: data visualization tools and technologies are used to analyze massive amounts of information and make data-driven decisions.
+
+
+Visualization, Figures, Plots, Graphs  
+Data visualization : 
+graphical representation of information and data
+Figures : 
+A figures is a visual presentation of results. 
+Come in the form of graphs, charts, drawings, photos, or maps.  
+They provide visual impact and can effectively communicate your primary finding.
+Plot: 
+A plot is a graphical technique for representing a data set
+Usually as a graph showing the relationship between two or more variables.
+The plot can be drawn by hand or by a computer.
+Graphs: 
+A graph is a picture designed to express words
+Particularly the connection between two or more quantities. 
+
+
+
 
 ### Data wrangling
+
+Remember 
+Data – variables in tabular format
+Variables 
+In columns
+Observations
+In rows 
+
+Definition : data 
+Data are characteristics or information
+usually numerical
+that are collected through observation.[1]
+
+Data is a set of values of qualitative or quantitative variables
+They are about one or more persons or objects, while a datum (singular of data) is single value of a single variable.[2]
+
+Definition : variables 
+A variable is any characteristics, number, or quantity that can be measured or counted.
+Types of variables: Numeric  
+
+Types of variables : Categorical
+Categorical variables = have values that describe a 'quality' or 'characteristic' of a data unit
+'what type' or 'which category‘
+Categorical variables may be further described as ordinal or nominal:
+An ordinal variable = a value that can be logically ordered or ranked. 
+Size = small, medium, large, extra large
+Attitudes = strongly agree, agree, disagree, strongly disagree
+A nominal variable = NO logical sequence. 
+Sex = male, female
+Business type = insurance, healthcare, retail
+Race = Asian, Caucasian, African
+
 
 
 ### Tips
@@ -70,6 +144,54 @@ Approaches:
 
 
 ## Statistical modelling (40 minutes)
+
+### Scalar
+
+Objectives of lecture
+At the end of the lecture, students will be 
+Able to model continuous outcome variable using multiple linear regression
+Able to  perform model assessment 
+Able to interpret model
+Introduction 
+We analyze data 
+To explain relationship between variables 
+To estimate the effect of a set of variables (predictors) onto another variable (the outcome)
+To make inference – how large the effect?
+To predict the outcome based on new data
+Estimation and Inference
+To estimate = 
+A process by which one makes inferences about a population, based on information obtained from a sample.
+Making inference = 
+the reasoning involved in drawing a conclusion or making a logical judgment
+on the basis of circumstantial evidence and prior conclusions 
+Not only on the basis of direct observation
+
+
+### Binary
+
+
+Motivation 
+When outcome is binary, the common analysis for making inference or prediction is logistic regression
+Inference = explanation 
+What is the aim?
+To explain vs to predict
+In statistics, to explain is more common
+Interested in the beta
+In analytics, to predict is more common
+Not interested in beta, but interested to predict the outcome
+Questions 
+Give example of outcome relevant to your area that you may study
+State the objective of the analysis
+Are the data suitable for logistic regression analysis?
+
+Outcome variable
+When the outcome is categorical (in the form of binary), we model using logistic regression  
+Binary outcome
+Acceptance of loan = Accepted vs Rejected
+Loan defaulters = Yes vs No
+For example :
+Acceptance of loan  <- gender  + age  + job status + ….
+Loan defaulters  <-  age + income + amount of loan + …..
 
 
 ## Spatial Epidemiology (40 minutes)

@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Introduction to R, RStudio and RStudio Cloud</title>
+    <meta charset="utf-8" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Introduction to R, RStudio and RStudio Cloud
+]
+.subtitle[
+## ⚔<br/I>Installation ,Packages, Directory, Data Management and Analysis
+]
+.author[
+### <div class="line-block">Kamarul Imran Musa, Assoc Prof (Epidemiology and Statistics)</div>
+]
+.date[
+### updated: 2023-03-02
+]
+
+---
+
+
+
+
+
+class: inverse, center, middle
+
+# What we will cover today?
+
+---
+
+## R and RStudio
+## RStudio Cloud
+## Installation for R and RStudio
+## Optional installation for Miktex or Texlive and MacTex  
+## R scripts, R packages, R Taskview
+
+## Live-coding (partial)
+
+---
+
+# RStudio Cloud
+
+- Anyone can sign up
+
+- Using RStudio on the cloud
+
+- Perhaps one of the quickest way to learn R
+
+- Do not need to install R on your machine (for this lecture)
+
+- Allows collaborration. 
+
+- Facilitate learning. Free for now 
+
+- Go here &lt;https://rstudio.cloud/&gt;
+
+---
+
+# RStudio Cloud
+
+## Interface
+
+.centre.shrink[![](cloud.PNG)]
+
+---
+
+# RStudio Cloud
+
+## Sign up and Log in (Please Sign Up, Now). This take around 5 mins
+
+.centre.shrink[![](cloud2.PNG)]
+
+---
+
+# Point and click R GUI
+
+## A number of SPSS like GUI for R
+
+- &lt;https://www.blueskystatistics.com/&gt;
+
+.center.shrink[![](bluesky.PNG)]
+
+---
+
+# Point and click R GUI
+
+- &lt;https://www.jamovi.org/&gt;
+
+.center.shrink[![](jamovi.PNG)]
+
+---
+
+# RStudio Server
+
+- You can install R and RStudio on the server
+  - RStudio Server
+  
+- Doing analysis on the server 
+
+- Give a taste of working on BIG DATA
+  
+- Two versions of RStudio Server
+  - RStudio Server 
+  - RStudio Server Professional 
+  
+- For example:
+  - &lt;https://healthdata.usm.my/rstudio/auth-sign-in&gt;
+  
+---
+
+class: inverse, center, middle
+
+# Installation 
+
+## You have to have **Admin Right** to your machine
+
+---
+
+class: inverse, center, middle
+
+# Installation (Do this at home on your machine)
+
+## R
+## RStudio
+## MiKTeX, TeXLive and MacTex (optional)
+
+---
+
+# Installation for R
+
+We need to install two software (at least)
+
+Install the **R** software from [cran](https://cran.r-project.org/). 
+
+- choose R version for your machine OS
+- Windows OS &lt;https://cran.r-project.org/bin/windows/base/R-3.6.1-win.exe&gt;
+- Mac OS &lt;https://cran.r-project.org/bin/macosx/R-3.6.1.pkg&gt;
+- Linux: then choose your flavour
+
+.right[![Cran website](cran.PNG)]
+
+---
+
+# Installation for RStudio
+
+- Install RStudio for your OS from here &lt;https://www.rstudio.com/products/rstudio/download/#download&gt;
+- Choose the supported platforms
+- size around 70-90 MB
+
+.right[![RStudio website](rstudio2.PNG)]
+
+---
+
+# Check R and RStudio on your machine
+
+## Do you have R? what version?
+## Do you have RStudio? what version?
+## Do you need to update?
+
+
+---
+
+# Installation of MiKTeX, TeXLive and MacTex
+
+- necessary to convert the outputs to pdf
+- will use this for RMarkdown
+
+.right[![RMarkdown](rmarkdown.PNG)]
+
+---
+
+## MiKTeX, for Window OS 
+
+.right[![MikTeX webpage](miktex.PNG)]
+
+---
+
+## MacTeX, for Mac OS
+
+.right[![MacTeX webpage](mactex.PNG)]
+
+---
+
+# Progress?
+
+## R 
+
+- R OK?
+
+## RStudio 
+- RStudio OK?
+
+## MikTeX or MacTex (optional)
+
+- MiKTeX, TeXLive and MacTeX ready?
+
+---
+
+class: inverse, center, middle
+
+# Hands-On (2 options): Start your RStudio 
+
+## Login to RStudio Cloud
+## OR
+## Start RStudio on your machine
+
+---
+
+# Login to RStudio Cloud 
+
+## &lt;https://rstudio.cloud&gt;
+
+- username
+- password 
+
+Click this link &lt;https://posit.cloud/spaces/346031/join?access_code=bXIJZHLLSqvkG-Kuk3K1D8JXiIyErmPsAPTUjC69&gt;
+
+---
+
+# Login to Rstudio Cloud
+
+.center.shrink[![](etm5950.jpg)]
+
+---
+
+# Start R on your machine
+
+- Find Rstudio in your machine
+
+![Rstudio](rstudio.PNG)
+
+---
+
+# What you see on RStudio
+
+- There will be 3 panes if you start Rstudio for the first time
+- 4 panes if you have used RStudio before
+
+.right[![RStudio Panes](rstudio_all.PNG)]
+
+---
+
+## Console tab
+
+- this is where we will see most of the results
+
+.right[![Console Pane](Console.PNG)]
+
+---
+
+## Files, Plots, Packages, Help and Viewer Pane 
+
+- List of objects
+- R files, datasets, tables, list etc 
+
+.right[![File, Plots and Viewer Pane](files.PNG)]
+
+---
+
+## Environment, History, Connection and Build Pane
+
+.right[![Environment Pane](envir.PNG)]
+
+---
+
+## Source Pane 
+
+- this is where we will create files and write our codes
+
+.right[![Source Pane](source.PNG)]
+
+
+---
+
+# Open a new R script
+
+- File -&gt; R Script
+- In Window OS, CTRL-SHIFT-N
+
+
+.right[![New R Script](Rscript.PNG)]
+
+---
+
+# Our first R script
+
+## First script
+
+- In Line 1, type `2 + 3` 
+- click CTRL-ENTER or CMD-ENTER 
+- see the outputs in the Console Pane
+
+
+```r
+2 + 3
+```
+
+```
+## [1] 5
+```
+
+---
+
+## Saving R script
+
+### For future use
+
+- File -&gt;
+- Save As -&gt;
+- Choose folder -&gt;  
+- Name the file
+
+
+---
+
+# Check version of R
+
+
+```r
+version[6:7]
+```
+
+```
+##        _
+## status  
+## major  4
+```
+
+The current version for R is , 4
+
+If you lower version, then you want to upgrade. To upgrade
+
+- for Windows, you can use **installr** package
+- for Mac OS, you can use some functions 
+
+More info here &lt;https://www.linkedin.com/pulse/3-methods-update-r-rstudio-windows-mac-woratana-ngarmtrakulchol/&gt;
+
+---
+
+## function, argument and parameters
+
+```
+f &lt;- function(&lt;arguments&gt;) {
+## Do something interesting
+}
+```
+For example, for the function `lm()` to estimate parameters for linear regression model
+
+
+```r
+args(lm)
+```
+
+```
+## function (formula, data, subset, weights, na.action, method = "qr", 
+##     model = TRUE, x = FALSE, y = FALSE, qr = TRUE, singular.ok = TRUE, 
+##     contrasts = NULL, offset, ...) 
+## NULL
+```
+
+---
+
+For example:
+
+
+```r
+lm(weight ~ Time, data = ChickWeight)
+```
+
+```
+## 
+## Call:
+## lm(formula = weight ~ Time, data = ChickWeight)
+## 
+## Coefficients:
+## (Intercept)         Time  
+##      27.467        8.803
+```
+
+Ref: 
+
+- &lt;https://www.stat.auckland.ac.nz/~ihaka/downloads/Waikato-WRUG.pdf&gt;
+- &lt;https://www.stat.berkeley.edu/~statcur/Workshop2/Presentations/functions.pdf&gt; 
+
+
+---
+
+## Need more help?
+
+Then type the ? before the function
+
+
+```r
+?lm
+```
+
+```
+## starting httpd help server ... done
+```
+
+See what will be displayed in Help Pane
+
+.right[![Help Pane](lm.PNG)]
+
+---
+class: inverse, center, middle
+
+# Packages
+
+---
+
+# Packages on CRAN
+
+&lt;https://cran.r-project.org/&gt;
+
+- Currently, the CRAN package repository features 12784 available packages
+- Cran Task Views 
+
+![Task Views](packages.PNG)
+
+
+---
+
+# Check if the package you need is available in your R library
+
+Type this inside your console
+
+
+```r
+library(ggplot2)
+```
+
+- You should not receive any error message. 
+- If you have not installed the package, you will receive and error message. And it tells you that the package is not available in your R.
+- the package is stored in the R folder in your My Document or HOME directory
+
+
+```r
+.libPaths()
+```
+
+```
+## [1] "C:/Users/drkim/AppData/Local/R/win-library/4.2"
+## [2] "C:/Program Files/R/R-4.2.2/library"
+```
+
+
+---
+
+# Install an R package 
+
+- To install an R package, you can type below (without the # tag)
+
+
+```r
+# install.packages(foreign, dependencies = TRUE)
+```
+
+- You need to have internet access
+- You can install from a zip file (from your machine or USB), from github and other repo
+
+---
+
+class: inverse, center, middle
+
+# Directory
+
+---
+
+# Directory
+
+This is important. Not knowing your working directory will make you lost
+
+- You must know where your folder is located
+- The folder can contain many sub folders
+- The folder should contain dataset (if you want to analyze your data)
+- It will later store the objects created during R session
+
+
+```r
+getwd()
+```
+
+```
+## [1] "C:/Users/drkim/OneDrive - Universiti Sains Malaysia/1_Codes_Programming/Data_Analysis_Workflow/Course_materials/1_intro_visualization/Intro_R/Lecture_Intro_R"
+```
+
+- You have to know to write file path. It is written differently for Window OS and other OS
+
+---
+
+# Starting your R job
+
+There are 2 ways to start your job
+
+- create a new project (recommended)
+- setting your working directory using `setwd()` (not recommended)
+
+---
+
+# Create new project
+
+- Always create a new project (This is the recommended way)
+- Go to `File -&gt; New Project`
+
+## Directory
+
+.right[![New Project](new_proj.PNG)]
+
+---
+
+## Project type
+
+### Click New Project
+
+.right[![Project Type](new_proj2.PNG)]
+
+
+---
+
+
+# Where is my data?
+
+- in (usually) data frame form
+- See the environment pane
+- Your data is now in memory (RAM)
+- How much your RAM for your machine?
+- The data will be gone once you close RStudio
+- But it will not change your original data (so be happy!)
+
+![My Data](mydata.PNG)
+
+---
+
+# Upload data to RStudio Cloud
+
+## You have to upload data to RStudio Cloud
+## Or link data to dropbox folder
+
+![Upload Data in RStudio Cloud](upload_data.jpg)
+
+---
+
+# More resources on RStudio Cloud
+
+## YouTube : RStudio Cloud for education 
+
+&lt;https://www.youtube.com/watch?v=PviVimazpz8&gt;
+
+## YouTube: Working with R in Cloud
+
+&lt;https://www.youtube.com/watch?v=SFpzr21Pavg&gt;
+
+---
+# Need help
+
+If you need help you can
+
+-  Type a question mark infront of a function
+
+
+```r
+?plot
+```
+
+- register and join RStudio Community here &lt;https://community.rstudio.com/&gt;
+- Ask questions on Stack Overflow &lt;https://stackoverflow.com/&gt;
+- Search for mailing list and subscribe to it
+- Books on R &lt;https://bookdown.org/&gt;
+
+---
+
+## Bookdown
+
+ &lt;https://bookdown.org/&gt;
+ 
+ ![Bookdown](bookdown.PNG)
+
+&lt;!-- TO PRINT to PDF type pagedown::chrome_print("Intro2.html") --&gt;
+
+---
+# Questions and contacts
+
+.pull-left[
+Twitter : @kamarul_imran
+
+Email : drki.musa@gmail.com 
+
+![myanalytics.com.my](mywebsite.PNG)
+]
+
+.pull-right[
+![](twitter.PNG)
+]
+
+---
+layout: false
+class: inverse, center, middle
+
+# **Enjoy!**
+
+Slides created via the R package [**xaringan**](https://github.com/yihui/xaringan).
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

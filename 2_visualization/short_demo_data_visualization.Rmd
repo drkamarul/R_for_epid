@@ -1,0 +1,120 @@
+---
+title: "Visualization in R (The Short Note)"
+author: |
+ | Assoc Prof Kamarul Imran Musa
+date: "`r Sys.Date()`"
+output: 
+  pdf_document:
+   number_sections: yes
+   toc: yes
+  html_document:
+     theme: united
+     highlight: tango
+     toc: yes
+     toc_depth: '3'
+     toc_float: yes
+     number_sections: true
+subtitle: Data Visualization using **ggplot2** package
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,out.width = '60%')
+```
+
+\newpage
+
+# Prepare your R project
+
+Always start a new data analysis task with a RStudio project. To do that, follow this steps:
+
+- Click **File** ->
+- Click **New Project** ->
+- Set **name** to this directory
+- Click **Create Project**
+
+# Load libraries
+
+- **tidyverse** - to make plots
+- **gapminder** - to use the gapminder data
+
+If you receive error that the packages are not available, you need to install them. 
+
+Two ways to install:
+
+- Go to `Packages` pane and type the required package in the search bar
+- Use the function `install.packages('name of package', dependencies = TRUE)`
+
+```{r}
+library(tidyverse)
+library(gapminder)
+```
+
+# Basic plots
+
+## Histogram
+
+```{r}
+ggplot(gapminder) +
+  geom_histogram(aes(lifeExp))
+```
+
+
+## Barchart
+
+```{r}
+ggplot(gapminder) +
+  geom_bar(aes(continent))
+```
+
+## Line graph
+
+```{r}
+ggplot(gapminder) +
+  geom_line(aes(x = year, y = lifeExp, group = country))
+```
+
+
+## Scatter plot
+
+```{r}
+ggplot(gapminder) +
+  geom_point(aes(x = gdpPercap, y = lifeExp))
+```
+
+## Smooth plot
+
+```{r}
+ggplot(gapminder) +
+  geom_smooth(aes(x = gdpPercap, y = lifeExp))
+```
+
+# Split your plots
+
+```{r}
+ggplot(gapminder) +
+  geom_histogram(aes(lifeExp)) +
+  facet_wrap(~ continent)
+```
+
+# Saving your plots
+
+```{r}
+ggsave('myplot.pdf')
+ggsave('myplot.png')
+ggsave('myplot.jpg')
+```
+
+
+# Task
+
+1. Get data of your interest 
+  - https://github.com/rfordatascience/tidytuesday/tree/master/data/2020
+  - https://www.kaggle.com/datasets 
+2. Make 5 or 6 plots to tell us about your data
+3. Customize your data - make change to colour, title, axes etc 
+
+# References
+
+- Different types of geom https://ggplot2.tidyverse.org/reference/index.html
+- Customizing your plots: Making changes to plot, add title, change themes etc http://www.cookbook-r.com/Graphs/
+- more advanced R graphs https://www.r-graph-gallery.com/ 
