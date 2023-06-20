@@ -1,29 +1,5 @@
----
-title: "Visualization in R (The Short Note)"
-author: |
- | Assoc Prof Kamarul Imran Musa
-date: "`r Sys.Date()`"
-output: 
-  pdf_document:
-   number_sections: yes
-   toc: yes
-  html_document:
-     theme: united
-     highlight: tango
-     toc: yes
-     toc_depth: '3'
-     toc_float: yes
-     number_sections: true
-subtitle: Data Visualization using **ggplot2** package
----
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE,out.width = '60%')
-```
-
-\newpage
-
-# Prepare your R project
+### Prepare your R project
 
 Always start a new data analysis task with a RStudio project. To do that, follow this steps:
 
@@ -32,7 +8,7 @@ Always start a new data analysis task with a RStudio project. To do that, follow
 - Set **name** to this directory
 - Click **Create Project**
 
-# Load libraries
+### Load libraries
 
 - **tidyverse** - to make plots
 - **gapminder** - to use the gapminder data
@@ -49,9 +25,9 @@ library(tidyverse)
 library(gapminder)
 ```
 
-# Basic plots
+### Basic plots
 
-## Histogram
+##### Histogram
 
 ```{r}
 ggplot(gapminder) +
@@ -59,14 +35,14 @@ ggplot(gapminder) +
 ```
 
 
-## Barchart
+#### Barchart
 
 ```{r}
 ggplot(gapminder) +
   geom_bar(aes(continent))
 ```
 
-## Line graph
+#### Line graph
 
 ```{r}
 ggplot(gapminder) +
@@ -74,21 +50,15 @@ ggplot(gapminder) +
 ```
 
 
-## Scatter plot
+#### Scatter plot
 
 ```{r}
 ggplot(gapminder) +
   geom_point(aes(x = gdpPercap, y = lifeExp))
 ```
 
-## Smooth plot
 
-```{r}
-ggplot(gapminder) +
-  geom_smooth(aes(x = gdpPercap, y = lifeExp))
-```
-
-# Split your plots
+#### Split your plots
 
 ```{r}
 ggplot(gapminder) +
@@ -96,7 +66,7 @@ ggplot(gapminder) +
   facet_wrap(~ continent)
 ```
 
-# Saving your plots
+### Saving your plots
 
 ```{r}
 ggsave('myplot.pdf')
@@ -105,7 +75,7 @@ ggsave('myplot.jpg')
 ```
 
 
-# Task
+### Task
 
 1. Get data of your interest 
   - https://github.com/rfordatascience/tidytuesday/tree/master/data/2020
@@ -113,7 +83,7 @@ ggsave('myplot.jpg')
 2. Make 5 or 6 plots to tell us about your data
 3. Customize your data - make change to colour, title, axes etc 
 
-# References
+### References
 
 - Different types of geom https://ggplot2.tidyverse.org/reference/index.html
 - Customizing your plots: Making changes to plot, add title, change themes etc http://www.cookbook-r.com/Graphs/

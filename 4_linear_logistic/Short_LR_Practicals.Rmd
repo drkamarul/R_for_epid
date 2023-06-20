@@ -1,0 +1,136 @@
+
+In this short practicals, we will show how to perform estimation, inference, prediction and model checking for linear regression model. 
+
+Steps:
+
+- Create project
+- Make sure dataset is(are) inside the project directory
+- load required R libraries
+
+
+```{r}
+library(tidyverse) #data wrangling and data visualization
+library(haven) #read statistical data
+library(here) #facilitate directory
+library(broom) #tidier results
+```
+
+
+First, we read the data into R.  
+
+```{r}
+data0 <- read_dta(here('datasets_wf', 'datamssm_a.dta'))
+glimpse(data0)
+```
+
+Convert labelled variables to factor variables 
+
+```{r}
+data0 <- data0 %>%
+  mutate_if(is.labelled, ~as_factor(.))
+summary(data0)
+```
+
+### Estimation
+
+Multivariable model
+
+Now, we let's estimate a model with
+
+- One dependent variable - hba1c
+- Two covariates : ldl and gender 
+
+```{r}
+modldl.gender <- lm(hba1c ~ ldl + gender, data = data0)
+summary(modldl.gender)
+```
+
+Multivariable with interaction
+
+Now we add a new covariate which is the product of two covariates
+
+- Dependent variable hba1c
+- Covariates: `ldl + gender + ldl*gender`
+
+```{r}
+modldl.gender.ia <- lm(hba1c ~ ldl + gender + ldl*gender, data = data0)
+summary(modldl.gender.ia)
+```
+
+### Inference 
+
+Getting the $95\%$ for the $\hat{\beta}$
+
+```{r}
+confint(modldl.gender)
+confint(modldl.gender.ia)
+```
+Nicer results with `broom::tidy()`
+
+
+
+```{r}
+tidy(modldl.gender, conf.int = TRUE)
+```
+
+```{r}
+tidy(modldl.gender.ia)
+```
+
+
+### Prediction
+
+Now, we can get the fitted values for hba1c
+
+```{r}
+fitted(modldl.gender) %>% head()
+```
+
+Or
+
+```{r}
+
+augment(modldl.gender.ia) %>% tail()
+```
+
+
+### Model checking
+
+We need to check for linear model assumptions
+
+1. Linearity of residuals
+2. Residuals are normally distributed
+3. Equal variance of residuals
+4. Independence observations 
+
+```{r}
+plot(modldl.gender.ia)
+```
+
+Somethings are not right 
+
+- does not look random
+- some outliers
+- is it linear? 
+
+We need to do further treatment:
+
+- transformation of variables 
+- more complex model
+- removing of influential observations 
+
+
+
+## Tips
+
+- Model specification is important
+- Which variables are 
+  - confounders
+  - mediators
+  - moderators
+- Effect of multicolinearity 
+- Model checking and model assessment
+- Are there outliers and are they influentials?
+- Simple model vs complex model
+- Bias and variance 
+- Exploratory vs Confirmatory model

@@ -1,42 +1,12 @@
----
-title: "Data Wrangling with R"
-author: |
-  | Kamarul Imran Musa
-  | Assoc Prof (Epidemiology and Statistics)
-date: "`r Sys.Date()`"
-output:
-  html_document:
-    theme: united
-    highlight: tango
-    toc: yes
-    toc_depth: '2'
-    toc_float: yes
-    number_sections: yes
-  pdf_document:
-    toc: yes
-    toc_depth: '2'
-subtitle: Harnessing the flexibility of **tidyverse** package
----
 
-\newpage
+### Data transformation with **dplyr** package
 
-# Data transformation 
-
-Definition of data transformation  
-
-- Data transformation is also known as Data Munging or Data Wrangling. 
-- The process of manually converting or mapping data.
-- from one "raw" form into another format. 
-
-# Data transformation with **dplyr** package
-
-## **dplyr** package 
 
 - **dplyr** is a package grouped inside **tidyverse**
 - **tidyverse** package is collection of packages. 
 - **dplyr** package is a very useful package to munge or wrangle or to tranform your data. 
 
-## Common procedures for doing data transformation 
+### Common procedures for doing data transformation 
 
 The common procedures that data analyst does include:
 
@@ -46,7 +16,7 @@ The common procedures that data analyst does include:
 4.  grouping observations based on certain criteria
 5.  reducing variable to groups to in order to estimate summary statistic 
 
-## Some **dplyr** functions 
+### Some **dplyr** functions 
 
 1.  `dplyr::select()` - to select a number of variables from a dataframe
 2.  `dplyr::mutate()` - to generate a new variable from existing variable 
@@ -54,15 +24,13 @@ The common procedures that data analyst does include:
 4.  `dplyr::filter()` - to group observations that fulfill certain criteria 
 5.  `dplyr::group_by()` and `dplyr::summarize()` - to reduce variable to groups in order to provide summary statistic  
 
-# Hands-on: Create a new project and read your data
-
-## Create a new project or set your working directory
+### Create a new project or set your working directory
 
 - It is very important to ensure you know where your working directory is 
 - To do so, the best practice is *is to create a new project*
 - Create a RStudio project everytime you want to start new analysis 
 
-## Create a new project
+#### Create a new project
 
 Steps:
 
@@ -74,7 +42,7 @@ Steps:
 
 The project directory is the directory (folder) where you store datasets, R codes and other outputs
 
-## Working directory
+#### Working directory
 
 If you do not start with a new project, you still need to know **the location of your working directory?**. 
 
@@ -83,7 +51,7 @@ If you do not start with a new project, you still need to know **the location of
 3. Type `getwd()` to display the active **working directory**.  And to set a working directory use `setwd()`. 
 4.  once you are know where your working directory is, you can start read or import data into your working directory. 
 
-## Packages to read data
+### Packages to read data
 
 - Remember, there are a number of packages you can use to read the data into R. 
 - It depends on the format of your data. 
@@ -94,13 +62,13 @@ If you do not start with a new project, you still need to know **the location of
   - **readr** package
   - **readxl** package
 
-# Data format
+### Data format
 
 1.  **readr** package provides a fast and friendly way to read rectangular data (like csv, tsv, and fwf).
 2.  **readxl** package reads .xls and .xlsx sheets.
 3.  **haven** package reads and writes SPSS, Stata, and SAS data.
 
-# `starwars` data
+### `starwars` data
 
 The `starwars` data is class of `tibble`. The data have:
 
@@ -111,8 +79,6 @@ Loading **tidyverse** packages will load **dplyr** automatically. If you want to
 
 ```{r}
 library(tidyverse) 
-library(kableExtra) #to create nice table
-library(DT)
 ```
 
 Take a peek at the `starwars` data
@@ -127,13 +93,7 @@ Next, we examine the first 10 observations of the data. There are 77 more rows N
 2.  `int` (integer), 
 3.  `dbl` (double)
 
-```{r}
-starwars %>% datatable()
-```
-
-# Hands-on : `dplyr::select()` , `dplyr::mutate()` and `dplyr::rename()`
-
-## `dplyr::select()`
+### `dplyr::select()` , `dplyr::mutate()` and `dplyr::rename()`
 
 In `starwars` data, we have 13 variables. From this dataset, let us generate a new dataset named as `mysw` with only these 4 variables , 
 
@@ -150,7 +110,6 @@ mysw
 - The new dataset `mysw` is now created. 
 - You can see it in the `Environment` pane.
 
-## `dplyr::mutate()`
 
 With `dplyr::mutate()`, you can generate new variable. 
 
@@ -173,7 +132,6 @@ mysw <- mysw %>% mutate(bmi = mass/(height/100)^2)
 mysw
 ```
 
-## `dplyr::rename()`
 
 Now, 
 
@@ -191,10 +149,7 @@ mysw
 ```
 
 
-# Hands-on : `dplyr::arrange()` and `dplyr::filter()`
-
-
-## `dplyr::arrange()`
+### `dplyr::arrange()`
 
 This will sort the observation based on the values of the specified variable. 
 
@@ -221,7 +176,7 @@ mysw
 ```
 
 
-## `dplyr::filter()`
+### `dplyr::filter()`
 
 Here, we will create a new dataset (which we will name as `mysw_m_40`) that contains observations with these criteria:
 
@@ -251,9 +206,7 @@ mysw_ht_45
 ```
 
 
-# Hands-on: Categorize a numerical variable and regroup a categorical variable
-
-##  Categorize a numerical variable
+###  Categorize a numerical variable
 
 ```{r}
 mysw <- mysw %>%
@@ -268,7 +221,7 @@ table(mysw$cat_bmi)
 ```
 
 
-## Regroup a categorical variable
+### Regroup a categorical variable
 
 ```{r}
 mysw <- mysw %>% 
@@ -285,9 +238,8 @@ table(mysw$cat_bmi2)
 ```
 
 
-# Hands-on : `dplyr::group_by()` and `dplyr::summarize`
+### `dplyr::group_by()` and `dplyr::summarize`
 
-## `dplyr::group_by()`
 
 The `group_by` function will prepare the data for group analysis.
 
@@ -305,7 +257,7 @@ mysw_g
 ```
 
 
-## `dplyr::summarize()`
+### `dplyr::summarize()`
 
 - Now that we have a group data named `mysw_g`
 - we would summarize our data using the mean and standard deviation (SD). 
@@ -342,7 +294,7 @@ freq_species_home
 ```
 
 
-# Hands-on : More complicated **dplyr** verbs
+### More complicated **dplyr** verbs
 
 To be more efficent, use multiple **dplyr** functions in one line of R code
 
@@ -369,7 +321,7 @@ The outputs
 desc_sw
 ```
 
-# References
+### References
 
 1.  dplyr vignettes here <https://cran.r-project.org/web/packages/dplyr/vignettes/dplyr.html>
 2.  forcats examples here <http://r4ds.had.co.nz/factors.html>
