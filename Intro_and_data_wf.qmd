@@ -1,6 +1,7 @@
 ---
-title: "Epidemiological and Statistical Analysis Using R"
-author: "Kamarul Imran Musa"
+title: "Introductory Workshop on Epidemiological and Statistical Analysis Using R"
+subtitle: "Workflow and Analysis"
+author: "Assoc Prof Dr Kamarul Imran Musa"
 format: 
   pdf:
     toc: true
@@ -22,41 +23,39 @@ format:
 
 ## About myself
 
-My name is Kamarul Imran, but just call me KIM. 
-
-I hold the position of Associate Professor in Epidemiology and Statistics at the School of Medical Sciences, Universiti Sains Malaysia. Currently, 
+My name is Kamarul Imran, but just call me KIM. I hold the position of Associate Professor in Epidemiology and Statistics at the School of Medical Sciences, Universiti Sains Malaysia. Currently, 
 
 - Head, Department of Community Medicine, School of Medical Sciences, 
 - Adjunct Assoc Prof at School of Medical and Life Sciences, Sunway University. 
 - Treasurer, Malaysian Association of Epidemiology 
 
-My academic profile is available [here](http://www.medic.usm.my/jpm/index.php/en/academic-information/587-prof-madya-dr-kamarul-imran-musa)
-
-Previously, I also taught at Monash Universiti Malaysia for the business analytics course, a Master programme.  
+My academic profile is available [here](http://www.medic.usm.my/jpm/index.php/en/academic-information/587-prof-madya-dr-kamarul-imran-musa). Previously, I also taught at Monash Universiti Malaysia for the business analytics course, a Master programme.  
 
 
-### Research profiles
+## Research profiles
 
 My research profile at Google Scholar is available [here](https://scholar.google.com/citations?user=XVf2_QcAAAAJ&hl=en&authuser=1.) 
 
-My SCOPUS author ID is 57194536466
+My SCOPUS author ID is [57194536466](https://www.scopus.com/authid/detail.uri?authorId=57194536466)
 
 ![](image/scopus.png)
 
-### Research interests
+## Research interests
 
-My research interests include medical epidemiology, statistical modelling and machine learning. 
+My research interests include medical epidemiology, statistical modelling and machine learning. In 2019, I was awarded with 2 major grants
 
-Recently, I was awarded with the FRGS grant (RM125,000) to understand the roles of  mammography images and clinical conditions on the performance of machine learning and statistical models to predict breast cancer. 
+- the FRGS grant (RM125,000) to understand the roles of  mammography images and clinical conditions on the performance of machine learning and statistical models to predict breast cancer. 
+- the Newton-Ungku Omar grant (GBP100,000 + RM480,000). 
 
-Email: drkamarul@usm.my 
+I can be connected by 
 
-Twitter: @kamarul_imran
-
-Personal page: https://myanalytics.com.my/
+- Email: drkamarul@usm.my 
+- Twitter: @kamarul_imran
+- [Personal webpage](https://myanalytics.com.my/)
 
 ![](image/myweb.png)
-### Books
+
+## Books
 
 - Analysing Data Using R (Penerbit USM)
 
@@ -67,19 +66,40 @@ Personal page: https://myanalytics.com.my/
 ![](image/book2.png)
 
 
-## Introduction to workshop
+# Introduction to workshop
 
 Length of workshop : 180 minutes
 
 Approaches:
 
 - Theory
-- Practical 
+- Hands-on  
 - Tips
+
+We are using [this URL](https://sites.google.com/view/epidstat/home) as our workshop webpage. Please,take a few minutes to register a free Posit Cloud account [here](https://posit.cloud/plans/free). 
+
+The very **important to follow these steps**
+
+- click this [link](https://posit.cloud/spaces/386007/join?access_code=pFJS6kctkQHzrVgGNRpgG_LfQIRXOqe5vMgb6k6Q) 
+- Accept to be a **member**
+- Click New Project
+- Click New RStudio Project
+
+Wait for 1-2 minutes for Posit to prepare the environment. 
+
+Next, 
+
+- click File
+- Click new R script
+
+Useful keyboard shortcuts to run each line of codes
+
+- CRTL - ENTER (for Windows users)
+- CMD - ENTER (for MacOS users)
 
 # Data analysis workflow (40 minutes)
 
-Based on my experience
+Based on my experience, this workflow will help you be effective
 
 - Read : Read data into R 
 - Explore : Explore data using graphs and tables
@@ -88,21 +108,21 @@ Based on my experience
 - Assess : Assess results based on assumptions. Identify limitations of analysis
 - Present : Present results, data and codes 
 
-Proposed by Hadley 
+Below, is another workflow, proposed by Hadley in his book.  
 
 ![](image/data-science.png)
 
 
 # Data visualization
 
-Data visualization is defined as
+## Introduction
 
-… the graphical representation of information and data. 
+Data visualization is defined as **the graphical representation of information and data.** 
 
-How to perform? We will use visual elements
+How to perform data visualization? We will be using visual elements such as:
 
-- charts, 
-- graphs, and 
+- charts 
+- graphs
 - maps
 
 Data visualization tools provide an accessible way to see and understand trends, outliers, and patterns in data.
@@ -112,33 +132,44 @@ data visualization tools and technologies are used to analyze massive amounts of
 
 
 Figures : 
+
 - A figures is a visual presentation of results. Come in the form of graphs, charts, drawings, photos, or maps.  They provide visual impact and can effectively communicate your primary finding.
 
 Plot: 
+
 - A plot is a graphical technique for representing a data set Usually as a graph showing the relationship between two or more variables. The plot can be drawn by hand or by a computer.
 
 Graphs: 
+
 - A graph is a picture designed to express words Particularly the connection between two or more quantities. 
 
-## Data visualization (Hands-on)
+## Hands-on
 
 ```{r, child=here::here('2_visualization','short_demo_data_visualization.Rmd')}
 
 ```
 
+
+## Questions and Tips
+
+- Do you know the location of your folder?
+- How Posit cloud differ from RStudio IDE on your machine?
+- What is an R project?
+- What is an R package? How many R packages are there? What are packages useful to generate plots and graphs?
+- What is an R code?
+- What is a function?
+
+
 # Data wrangling
 
-Remember: 
+## Introduction
 
-Data – variables in tabular format
+Remember, dataset contains data. Data contains variables in tabular format. There are: 
 
-Variables - In columns
-Observations - In rows 
+- Variables in columns
+- Observations in rows 
 
-Definition : Data are characteristics or information
-usually numerical that are collected through observation.
-
-Data is a set of values of qualitative or quantitative variables They are about one or more persons or objects, while a datum (singular of data) is single value of a single variable.
+Definition : Data are characteristics or information usually numerical that are collected through observation.Data is a set of values of qualitative or quantitative variables They are about one or more persons or objects, while a datum (singular of data) is single value of a single variable.
 
 Definition : variable is any characteristics, number, or quantity that can be measured or counted.
 
@@ -147,50 +178,61 @@ Types of variables:
 - Numeric  
 - Categorical
 
-Categorical variables
+Categorical variables 
 
 - have values that describe a 'quality' or 'characteristic' of a data unit 
-- Categorical variables may be further described as ordinal or nominal
-- An ordinal variable = a value that can be logically ordered or ranked. 
+- may be further described as ordinal or nominal
+- such as an ordinal variable has values that can be logically ordered or ranked. 
 
 - Size : small, medium, large, extra large
 - Attitudes : strongly agree, agree, disagree, strongly disagree
 
-A nominal variable has no logical sequence. 
+A nominal variable has no logical sequence. For example:
 
 - Sex : male, female
 - Business type : insurance, healthcare, retail
 - Race : Asian, Caucasian, African
 
-## Data wrangling (Hands-on)
+## Hands-on
 
 ```{r, child=here::here('3_wrangling_EDA','data_transformation_imr2020_note.Rmd')}
 
 ```
 
-## Tips
+## Questions and Tips
+
+- Whas is data wrangling?
+- Why R store data in RAM?
+- What are the common data wrangling processes in your field?
+- What are R packages useful to wrangle data?
+- If you are given a dataset in MS Excel, should you wrangle in Excel or in RStudio?
+- Is data wrangling safe? Will it overwrite the original data?
 
 # Statistical modelling: Scalar or continuous outcome (20 minutes)
 
-Objectives of lecture:
+## Introduction
 
-At the end of the lecture, students will be 
-- Able to model continuous outcome variable using multiple linear regression
-- Able to  perform model assessment 
-- Able to interpret model
+Objectives:
 
-We analyze data 
+At the end of this section, you will be to
+
+- model continuous outcome variable using multiple linear regression
+- perform model assessment 
+- interpret model
+
+Regression analysis helps us 
+
 - to explain relationship between variables 
 - to estimate the effect of a set of variables (predictors) onto another variable (the outcome)
 - to make inference – how large the effect?
 - to predict the outcome based on new data
 
-Estimation and Inference
+Estimation and inference are different. 
 
-To estimate: A process by which one makes inferences about a population, based on information obtained from a sample.
-To infer : To make reasons involved in drawing a conclusion or making a logical judgment on the basis of circumstantial evidence and prior conclusions and not only on the basis of direct observation
+- To estimate: A process by which one makes inferences about a population, based on information obtained from a sample.
+- To infer : To make reasons involved in drawing a conclusion or making a logical judgment on the basis of circumstantial evidence and prior conclusions and not only on the basis of direct observation
 
-## Hands-on Linear regression model
+## Hands-on 
 
 ```{r, child=here::here('4_linear_logistic','Short_LR_Practicals.Rmd')}
 
@@ -199,8 +241,7 @@ To infer : To make reasons involved in drawing a conclusion or making a logical 
 
 # Statistical modelling: Binary outcome (20 minutes)
 
-
-Motivation 
+## Motivation 
 
 When outcome is binary, the common analysis for making inference or prediction is logistic regression. 
 
@@ -222,17 +263,20 @@ When the outcome is categorical (in the form of binary), we model using logistic
 - Acceptance of loan = Accepted vs Rejected
 - Loan defaulters = Yes vs No
 
-Binary logistic regression modesl, for example :
+Binary logistic regression models, for example :
+
 - Acceptance of loan  <- gender  + age  + job status + ….
 - Loan defaulters  <-  age + income + amount of loan + …..
 
-## Hands-on logistics regression model
+The logit model is written as:
+
+$$log \frac{p}{1-p} = \beta_0 + \beta_{age} + \beta_{male} + \beta_{chinese} + \beta_{indians} + \beta_{age}\times\beta_{male}$$
+
+## Hands-on  
 
 ```{r, child=here::here('4_linear_logistic','Short_Log_regression.Rmd')}
 
 ```
-
-# Spatial Epidemiology (40 minutes)
 
 
 # Summary

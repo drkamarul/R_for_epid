@@ -1,12 +1,11 @@
 
-### Data transformation with **dplyr** package
+### Data wrangling or transformation 
 
+Useful package
 
-- **dplyr** is a package grouped inside **tidyverse**
-- **tidyverse** package is collection of packages. 
-- **dplyr** package is a very useful package to munge or wrangle or to tranform your data. 
+- **tidyverse** package is collection of packages, specifically the **dplyr** package. It is a very useful package to munge or wrangle or to tranform your data. 
 
-### Common procedures for doing data transformation 
+### Common procedures  
 
 The common procedures that data analyst does include:
 
@@ -16,7 +15,7 @@ The common procedures that data analyst does include:
 4.  grouping observations based on certain criteria
 5.  reducing variable to groups to in order to estimate summary statistic 
 
-### Some **dplyr** functions 
+### Some functions 
 
 1.  `dplyr::select()` - to select a number of variables from a dataframe
 2.  `dplyr::mutate()` - to generate a new variable from existing variable 
@@ -26,9 +25,11 @@ The common procedures that data analyst does include:
 
 ### Create a new project or set your working directory
 
+This only applies if you work on RStudio IDE on your machine. 
+
 - It is very important to ensure you know where your working directory is 
 - To do so, the best practice is *is to create a new project*
-- Create a RStudio project everytime you want to start new analysis 
+- Create a RStudio project everytime you want to start new analysis (but not when you want redo them)
 
 #### Create a new project
 
@@ -103,7 +104,8 @@ In `starwars` data, we have 13 variables. From this dataset, let us generate a n
 4.  gender
 
 ```{r}
-mysw <- starwars %>% select(name, gender, height, mass)
+mysw <- starwars %>% 
+  select(name, gender, height, mass)
 mysw
 ```
 
@@ -124,7 +126,8 @@ $$bmi = \frac{kg}{m^2}$$
 
 
 ```{r}
-mysw <- mysw %>% mutate(bmi = mass/(height/100)^2)
+mysw <- mysw %>% 
+  mutate(bmi = mass/(height/100)^2)
 ```
 
 
@@ -139,8 +142,10 @@ Now,
 2.  rename *bmi2* to *bmisq*
 
 ```{r}
-mysw <- mysw %>% mutate(bmi2 = bmi^2)
-mysw <- mysw %>% rename(bmisq = bmi2)
+mysw <- mysw %>% 
+  mutate(bmi2 = bmi^2)
+mysw <- mysw %>% 
+  rename(bmisq = bmi2)
 ```
 
 
@@ -155,7 +160,8 @@ This will sort the observation based on the values of the specified variable.
 
 
 ```{r}
-mysw <- mysw %>% arrange(desc(bmi))
+mysw <- mysw %>% 
+  arrange(desc(bmi))
 ```
 
 
@@ -167,7 +173,8 @@ mysw
 - values from the lowest to the biggest bmi (ascending). 
 
 ```{r}
-mysw <- mysw %>% arrange(bmi)
+mysw <- mysw %>% 
+  arrange(bmi)
 ```
 
 
@@ -184,7 +191,8 @@ Here, we will create a new dataset (which we will name as `mysw_m_40`) that cont
 - bmi at or above 40
 
 ```{r}
-mysw_m_40 <- mysw %>% filter(gender == 'male', bmi >= 40)
+mysw_m_40 <- mysw %>% 
+  filter(gender == 'male', bmi >= 40)
 mysw_m_40
 ```
 
@@ -238,62 +246,6 @@ table(mysw$cat_bmi2)
 ```
 
 
-### `dplyr::group_by()` and `dplyr::summarize`
-
-
-The `group_by` function will prepare the data for group analysis.
-
-1.  for male, female, hermaphrodite and none (`gender` variable)
-2.  to get summary values for mean `bmi`, mean `ht` and mean `mass`
-
-```{r}
-mysw_g <- mysw %>% group_by(gender)
-```
-
-
-
-```{r}
-mysw_g
-```
-
-
-### `dplyr::summarize()`
-
-- Now that we have a group data named `mysw_g`
-- we would summarize our data using the mean and standard deviation (SD). 
-
-```{r}
-mean_sd_res <- mysw_g %>% 
-  summarise(meanbmi = mean(bmi, na.rm = TRUE), 
-            meanht  = mean(height, na.rm = TRUE),
-            meanmass = mean(mass, na.rm = TRUE),
-            sdbmi = sd(bmi, na.rm = TRUE),
-            sdht = sd(height, na.rm = TRUE),
-            sdmass = sd(mass, na.rm = TRUE))
-```
-
-
-
-```{r}
-mean_sd_res
-```
-
-
-To calculate the frequencies
-
-```{r}
-freq_species <- starwars %>% count(species, sort = TRUE)
-freq_species
-```
-
-
-```{r}
-freq_species_home <- starwars %>% 
-  count(species, homeworld, sort = TRUE)
-freq_species_home
-```
-
-
 ### More complicated **dplyr** verbs
 
 To be more efficent, use multiple **dplyr** functions in one line of R code
@@ -323,10 +275,10 @@ desc_sw
 
 ### References
 
-1.  dplyr vignettes here <https://cran.r-project.org/web/packages/dplyr/vignettes/dplyr.html>
-2.  forcats examples here <http://r4ds.had.co.nz/factors.html>
+1.  **dplyr** [vignette](https://cran.r-project.org/web/packages/dplyr/vignettes/dplyr.html)
+2.  forcats package [here](http://r4ds.had.co.nz/factors.html)
 3.  reading data into R <https://garthtarr.github.io/meatR/rio.html>
-4.  a very good tutorial on **dplyr** <https://suzan.rbind.io/2018/01/dplyr-tutorial-1/> 
+4.  a very good tutorial on **dplyr** at  <https://suzan.rbind.io/2018/01/dplyr-tutorial-1/> 
 
 
 

@@ -1,14 +1,11 @@
-### Prepare environment
+### Load packages
 
 ```{r}
 library(tidyverse)
 library(readxl)
 library(here)
 library(broom)
-library(kableExtra)
 ```
-
-
 ### Read data
 
 The data comes from a surgeon (Dr Najmi). The data contains variables from patients with peptic ulcer disease. 
@@ -16,13 +13,19 @@ The data comes from a surgeon (Dr Najmi). The data contains variables from patie
 It is in excel form. 
 
 ```{r}
-PUP2 <- read_excel(here('datasets_wf', 'PUP2.xlsx'))
+PUP2 <- read_excel(here('datasets_wf', 
+                        'PUP2.xlsx'))
 ```
 
-Quickly examine types of variables and summary statistics
+Quickly examine types of variables and summary statistics:
 
 ```{r}
 glimpse(PUP2)
+```
+
+Data summary:
+
+```{r}
 summary(PUP2)
 ```
 
@@ -41,124 +44,56 @@ PUP2 %>%
   xlab('outcome') + ylab('freq')
 ```
 
-### Multivariables logistic analysis
+### Multivariables logistic regression
 
-We start with main effect models (no interaction)
-
-Let us run this model with
+Let us run a multivariable model with
 
 - Outcome: oc2
-- Primary variables: ASA, degree of perforation, PULP, NSAIDS, Hg, malena, onset more than 24 
-- Confounding variables: age, gender, diabetes, hypertension
+- Primary variables: ASA, degree of perforation, PULP, NSAIDS, Hg, onset more than 24 
+- Confounding variables: age, gender, diabetes
 
 Primary variables are variables of interest that would predict outcome of peptic ulcer. Confounding variables are variables that may alter the effect of the primary variables when they are in the model. This may happen due to different distribution of them at the beginning of the study.
 
-Do not control variables after the study (refer to Andrew Gelman argument)
+Only control baseline variables (refer to Andrew Gelman argument)
 
 ```{r}
-model_multivar <- glm(oc2 ~ age + gender + epigastric_pain + onset_more_24_hrs + 
-                        diabetes + NSAIDS + factor(ASA) + PULP + perforation + 
-                        hemoglobin, 
-                      family = binomial(link = 'logit'), data = PUP2)
-model_multivar2 <- tidy(model_multivar, conf.int = T)
+model_multivar <- glm(oc2 ~ age + gender + epigastric_pain + 
+                        onset_more_24_hrs + diabetes + NSAIDS + 
+                        factor(ASA) + PULP + perforation + hemoglobin, 
+                      family = binomial(link = 'logit'), 
+                      data = PUP2)
 ```
 
+Let's view in a tidy format:
+
 ```{r}
-kable(model_multivar2)  %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", 
-                                      "condensed", "responsive"))
+tidy(model_multivar, conf.int = T)
 ```
 
-With interaction model. Because, the effect of covariates on outcome maybe different according to different level of PULP and extent of perforation size. 
-
-The interaction effect between perforation and PULP. 
+Let add an interaction term, assuming that the effect of covariates on outcome maybe different according to different level of PULP and extent of perforation size. So the interaction effect is between perforation and PULP. 
 
 ```{r}
-model_ia <- glm(oc2 ~ age + gender + epigastric_pain + onset_more_24_hrs + 
-                  diabetes + NSAIDS + factor(ASA) + PULP + perforation + 
+model_ia <- glm(oc2 ~ age + gender + epigastric_pain + 
+                  onset_more_24_hrs + diabetes + NSAIDS + 
+                  factor(ASA) + PULP + perforation + 
                   hemoglobin + perforation:PULP, 
                 family = binomial(link = 'logit'), data = PUP2)
+```
+
+Then store as a tidy object
+
+```{r}
 model_ia <- tidy(model_ia, conf.int = T)
-kable(model_ia)  %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
-```
-
-## Alternative models
-
-For ASA adjusting for baseline covariates (age, gender, diabetes, onset_more_24_hrs)
-
-```{r}
-model_ASA <- glm(oc2 ~ factor(ASA) + age + gender + diabetes + 
-                   onset_more_24_hrs, 
-                family = binomial(link = 'logit'), data = PUP2)
-m_ASA <- tidy(model_ASA, exponentiate = TRUE, conf.int = TRUE)
-```
-
-For Perforation
-
-```{r}
-model_perf <- glm(oc2 ~ degree_perforation + age + gender + diabetes + 
-                    onset_more_24_hrs,
-                family = binomial(link = 'logit'), data = PUP2)
-m_perf <- tidy(model_perf,  exponentiate = TRUE, conf.int = TRUE)
-```
-
-For PULP
-
-```{r}
-model_PULP <- glm(oc2 ~ PULP + age + gender + diabetes + onset_more_24_hrs, 
-                family = binomial(link = 'logit'), data = PUP2)
-m_pulp <- tidy(model_PULP,  exponentiate = TRUE, conf.int = TRUE)
-
-```
-
-For perforation
-
-```{r}
-model_perf2 <- glm(oc2 ~ perforation + age + gender + diabetes + 
-                     onset_more_24_hrs, 
-                family = binomial(link = 'logit'), data = PUP2)
-m_perf2 <- tidy(model_perf2,  exponentiate = TRUE, conf.int = TRUE)
 ```
 
 
-For haemoglobin
+And now we export the table in csv format for easy manipulation in MS Excel for example:
 
 ```{r}
-model_hg <- glm(oc2 ~ hemoglobin + age + gender + diabetes + 
-                  onset_more_24_hrs, 
-                family = binomial(link = 'logit'), data = PUP2)
-m_hg <- tidy(model_hg,  exponentiate = TRUE, conf.int = TRUE)
-``` 
-
-
-Results combined in nicer **tidy** format
-
-- decide what to be in the table
-
-```{r}
-multi_confirm <- bind_rows(m_ASA, m_perf, m_pulp, m_perf2, m_hg) %>% 
-  filter(term %in% c("factor(ASA)2", "factor(ASA)3", 
-                     "degree_perforationmoderate", "degree_perforationsmall",
-                     "PULP", "perforation", "hemoglobin")) %>%
-  rename(adjOR = estimate, lower_CI = conf.low, upper_CI = conf.high)
+write_csv(model_ia, 'model_ia.csv')
 ```
 
-- using some styles 
-
-```{r}
-kable(multi_confirm) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", 
-                                      "condensed", "responsive")) 
-```
-
-- exporting to csv for easy manipulation
-
-```{r}
-write_csv(multi_confirm, 'multivar_final.csv')
-```
-
-## Model checking
+### Model checking
 
 Making predictions
 
@@ -170,9 +105,24 @@ fitted_logodds <- augment(model_multivar, type.predict = 'link')
 fitted_prob <- augment(model_multivar, type.predict = 'response')
 ```
 
-## Tips
 
-- confusion matrix
-- overall model fitness (Hosmer Lemeshow test)
-- Area under the ROC curve
-- Model diagnostics
+Let's see the results
+
+```{r}
+fitted_logodds
+```
+
+```{r}
+fitted_prob
+```
+
+
+## Questions and Tips
+
+- What function did we use to perform logistic regression?
+- What statistical framework did we use to perform the logistic regression? What statistical family did we choose for estimation?
+- How to assess logistic regression model?
+  - confusion matrix
+  - overall model fitness (Hosmer Lemeshow test)
+  - Area under the ROC curve
+- Model diagnostics for outliers and influential cases

@@ -1,3 +1,4 @@
+### Objectives 
 
 In this short practicals, we will show how to perform estimation, inference, prediction and model checking for linear regression model. 
 
@@ -11,7 +12,7 @@ Steps:
 ```{r}
 library(tidyverse) #data wrangling and data visualization
 library(haven) #read statistical data
-library(here) #facilitate directory
+library(here) #help locate the working directory
 library(broom) #tidier results
 ```
 
@@ -23,7 +24,7 @@ data0 <- read_dta(here('datasets_wf', 'datamssm_a.dta'))
 glimpse(data0)
 ```
 
-Convert labelled variables to factor variables 
+Convert labelled variables to factor variables: 
 
 ```{r}
 data0 <- data0 %>%
@@ -33,21 +34,17 @@ summary(data0)
 
 ### Estimation
 
-Multivariable model
+Now, we let's estimate a multivariable (two or more predictors) model with
 
-Now, we let's estimate a model with
-
-- One dependent variable - hba1c
-- Two covariates : ldl and gender 
+- One dependent variable - `hba1c`
+- Two covariates : `ldl` and `gender` 
 
 ```{r}
 modldl.gender <- lm(hba1c ~ ldl + gender, data = data0)
 summary(modldl.gender)
 ```
 
-Multivariable with interaction
-
-Now we add a new covariate which is the product of two covariates
+And now multivariable with interaction. We add a new covariate which is the product of two covariates:
 
 - Dependent variable hba1c
 - Covariates: `ldl + gender + ldl*gender`
@@ -67,14 +64,16 @@ confint(modldl.gender.ia)
 ```
 Nicer results with `broom::tidy()`
 
-
-
 ```{r}
-tidy(modldl.gender, conf.int = TRUE)
+res1 <- tidy(modldl.gender, conf.int = TRUE)
+res1
 ```
 
+We can save the result in `csv` format for easy editing. 
+
 ```{r}
-tidy(modldl.gender.ia)
+res2 <- tidy(modldl.gender.ia)
+write_csv(res2, 'results_linear.csv')
 ```
 
 
@@ -82,14 +81,8 @@ tidy(modldl.gender.ia)
 
 Now, we can get the fitted values for hba1c
 
-```{r}
-fitted(modldl.gender) %>% head()
-```
-
-Or
 
 ```{r}
-
 augment(modldl.gender.ia) %>% tail()
 ```
 
@@ -121,8 +114,10 @@ We need to do further treatment:
 
 
 
-## Tips
+## Questions and Tips
 
+- what function did we use to estimate a `lm` model?
+- what is another function we can use?
 - Model specification is important
 - Which variables are 
   - confounders
@@ -131,6 +126,6 @@ We need to do further treatment:
 - Effect of multicolinearity 
 - Model checking and model assessment
 - Are there outliers and are they influentials?
-- Simple model vs complex model
+- Simple model vs complex model, which will you prioritize?
 - Bias and variance 
 - Exploratory vs Confirmatory model

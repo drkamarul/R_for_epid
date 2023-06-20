@@ -1,6 +1,8 @@
 
 ### Prepare your R project
 
+This applies **ONLY WHEN YOU ARE USING RSTUDIO IDE ON YOUR LOCAL MACHINE**. 
+
 Always start a new data analysis task with a RStudio project. To do that, follow this steps:
 
 - Click **File** ->
@@ -8,7 +10,7 @@ Always start a new data analysis task with a RStudio project. To do that, follow
 - Set **name** to this directory
 - Click **Create Project**
 
-### Load libraries
+### Load R packages
 
 - **tidyverse** - to make plots
 - **gapminder** - to use the gapminder data
@@ -74,17 +76,18 @@ ggsave('myplot.png')
 ggsave('myplot.jpg')
 ```
 
+### Tasks
 
-### Task
+1. Get data of your interest from 
 
-1. Get data of your interest 
-  - https://github.com/rfordatascience/tidytuesday/tree/master/data/2020
-  - https://www.kaggle.com/datasets 
+- [github](https://github.com/rfordatascience/tidytuesday/tree/master/data/2020)
+- [Kaggle](https://www.kaggle.com/datasets) 
+
 2. Make 5 or 6 plots to tell us about your data
 3. Customize your data - make change to colour, title, axes etc 
 
 ### References
 
-- Different types of geom https://ggplot2.tidyverse.org/reference/index.html
-- Customizing your plots: Making changes to plot, add title, change themes etc http://www.cookbook-r.com/Graphs/
-- more advanced R graphs https://www.r-graph-gallery.com/ 
+- Different types of [geom](https://ggplot2.tidyverse.org/reference/index.html)
+- [R Graphics Cookbook](http://www.cookbook-r.com/Graphs/)
+- advanced templates for R graphs at <https://www.r-graph-gallery.com/> 
