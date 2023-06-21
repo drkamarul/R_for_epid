@@ -208,6 +208,110 @@ A nominal variable has no logical sequence. For example:
 - If you are given a dataset in MS Excel, should you wrangle in Excel or in RStudio?
 - Is data wrangling safe? Will it overwrite the original data?
 
+# Epidemiological analysis
+
+The workflow and codes for this section come largelyt from [The Epidemiologist R Handbook](https://epirhandbook.com/en/epidemic-curves.html)
+
+## Objectives
+
+We will generate an epidemic curve.
+
+## Loading packages
+
+Now, we will use a different function `pacman::p_load()`. This function will load the libraries. If the libraries are not installed, then they will be installed. But you have to be connected to the internet. 
+
+```{r}
+pacman::p_load(
+  rio,          # file import/export
+  here,         # relative filepaths 
+  lubridate,    # working with dates/epiweeks
+  aweek,        # alternative package for working with dates/epiweeks
+  incidence2,   # epicurves of linelist data
+  i2extras,     # supplement to incidence2
+  stringr,      # search and manipulate character strings
+  forcats,      # working with factors
+  RColorBrewer, # Color palettes from colorbrewer2.org
+  tidyverse     # data management + ggplot2 graphics
+) 
+```
+
+## Import data
+
+We have a linelisting data. 
+
+```{r}
+linelist <- import(here("datasets_wf", "linelist_cleaned.xlsx"))
+glimpse(linelist)
+```
+## Aggregate data by hospitals
+
+```{r}
+count_data <- linelist %>% 
+  group_by(hospital, date_hospitalisation) %>% 
+  summarize(n_cases = n()) %>% 
+  filter(date_hospitalisation > as.Date("2013-06-01")) %>% 
+  ungroup()
+count_data
+```
+
+## Set date
+
+We set the date to make sure we all have similar results. In reality, this is not so. 
+
+```{r}
+data_date <- as.Date("2015-05-15")
+```
+
+## Generate epidemic curve
+
+we will follow 2 steps and use the **incidence2** package:
+
+1. Create an incidence object (using the function incidence())
+  - Provide the data
+  - Specify the date column to `date_index =`
+  - Specify the `interval =` into which the cases should be aggregated (daily, weekly, monthly..)
+  - Specify any grouping columns (e.g. gender, hospital, outcome)
+  
+2. Plot the incidence object
+  - Specify labels, colors, titles, etc.
+
+```{r}
+pacman::p_load(incidence2)
+```
+
+```{r}
+# create the incidence object, aggregating cases by day
+epi_day <- incidence(     # create incidence object
+  x = linelist,             # dataset
+  date_index = "date_onset",  # date column
+  interval = "day"          # date grouping interval
+  )
+```
+
+## Incidence format and data
+
+This is the format of the incidence object.
+
+```{r}
+class(epi_day)
+```
+And this is the data that will form the curve
+
+```{r}
+epi_day
+```
+or
+
+```{r}
+summary(epi_day)
+```
+## Plot epidemic curve
+
+```{r}
+plot(epi_day)
+```
+
+
 # Statistical modelling: Scalar or continuous outcome (20 minutes)
 
 ## Introduction
