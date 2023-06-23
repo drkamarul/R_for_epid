@@ -385,6 +385,27 @@ $$log \frac{p}{1-p} = \beta_0 + \beta_{age} + \beta_{male} + \beta_{chinese} + \
 
 # Summary
 
+Useful for users and trainers:
+
+1. Draft your data analysis workflow 
+2. Identify each stage of the workflow
+3. At each stage, ask
+  -   what task is involved
+  -   what **R functions** required to perform the task
+  -   which **R package that contains the function**
+4. Perform the task using the default parameters
+5. Tweak the function to suit more complex task
+6. If errors committed, get help
+  -   friends
+  -   StackOverflow
+  -   R community
+7. Use tools
+  -   Posit Cloud
+  -   RStudio IDE
+  -   Google Collab
+8. Traditional stat software may not able to handle the demand of modern-wide-big-on-the-cloud data
+9.    Practice, practice, practise
+
 
 
 
