@@ -408,6 +408,6 @@ Useful for users and trainers:
 
 ## ALL THE BEST 
 
-![](\image\just_code.jpg)
+![](image\just_code.jpg)
 
 
